@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PSP Lua Level Editor</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #121318;
+    color: #e1e3e6;
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Layout */
+.sidebar {
+    width: 320px;
+    background: #1a1b23;
+    border-right: 1px solid #2a2c38;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+}
+
+.sidebar h1 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.5px;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #8a8f9d;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    background: #242632;
+    border: 1px solid #36394a;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+select:focus {
+    border-color: #5c6bc0;
+}
+
+.button-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+button {
+    padding: 10px;
+    background: #2d3142;
+    border: 1px solid #3d425a;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    background: #3a3f55;
+    border-color: #525977;
+}
+
+button.primary {
+    background: #4f46e5;
+    border-color: #6366f1;
+}
+
+button.primary:hover {
+    background: #4338ca;
+}
+
+button.danger {
+    background: #7f1d1d;
+    border-color: #991b1b;
+}
+
+button.danger:hover {
+    background: #991b1b;
+}
+
+textarea {
+    width: 100%;
+    height: 180px;
+    background: #0f1015;
+    border: 1px solid #2a2c38;
+    border-radius: 6px;
+    padding: 12px;
+    color: #a7f3d0;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 13px;
+    resize: vertical;
+    outline: none;
+}
+
+textarea:focus {
+    border-color: #4f46e5;
+}
+
+/* Main Content Workspace */
+.main-content {
+    flex: 1;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at center, #181a24 0%, #0d0e12 100%);
+}
+
+.grid-container {
+    background: #1a1b23;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #2a2c38;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.5);
+}
+
+#grid {
+    display: grid;
+    gap: 1px;
+    background: #2a2c38;
+}
+
+/* Adjusted cell sizing and image zoom */
+.cell {
+    width: 32px;
+    height: 32px;
+    background-color: #121318;
+    cursor: pointer;
+    /* Zooming by 135% pushes transparent outer padding past tile boundaries */
+    background-size: 135% 135%;
+    background-position: top left;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+    transition: filter 0.1s ease, transform 0.05s ease;
+}
+
+.cell:hover {
+    filter: brightness(1.3);
+    z-index: 10;
+}
+
+.cell:active {
+    transform: scale(0.95);
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h1>PSP Level Editor</h1>
+
+    <div class="control-group">
+        <label for="tool">Selected Element</label>
+        <select id="tool">
+            <option value="W">WALL (W)</option>
+            <option value="R">ROCK (R)</option>
+            <option value="F">FLAG (F)</option>
+            <option value="B">BABA (B)</option>
+            <option value="E">TILE (E - Cosmetic)</option>
+
+            <option value="T">TEXT WALL (T)</option>
+            <option value="G">TEXT ROCK (G)</option>
+            <option value="Q">TEXT FLAG (Q)</option>
+
+            <option value="I">TEXT IS (I)</option>
+            <option value="S">TEXT STOP (S)</option>
+            <option value="P">TEXT PUSH (P)</option>
+            <option value="V">TEXT WIN (V)</option>
+
+            <option value="Y">TEXT YOU (Y)</option>
+            <option value="A">TEXT BABA (A)</option>
+
+            <option value=".">EMPTY</option>
+        </select>
+    </div>
+
+    <div class="button-group">
+        <button class="danger" onclick="clearGrid()">Clear</button>
+        <button class="primary" onclick="exportLevel()">Export</button>
+        <button onclick="importLevel()">Import</button>
+    </div>
+
+    <div class="control-group">
+        <label for="output">Level Data</label>
+        <textarea id="output" placeholder="Exported or imported level text will appear here..."></textarea>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="grid-container">
+        <div id="grid"></div>
+    </div>
+</div>
+
+<script>
+
+const width = 20;
+const height = 12;
+
+const tileImages = {
+    ".": "empty.png",
+    
+    // Objects
+    "W": "wallobj.png",
+    "R": "rock.png",
+    "F": "flag.png",
+    "B": "babadown_0.png",
+    "E": "tile.png",
+
+    // Noun / Subject Texts
+    "T": "text_wall.png",
+    "G": "text_rock.png",
+    "Q": "text_flag.png",
+    "A": "text_baba.png",
+
+    // Operator & Property Texts
+    "I": "text_is.png",
+    "S": "text_stop.png",
+    "P": "text_push.png",
+    "V": "text_win.png",
+    "Y": "text_you.png"
+};
+
+let level = [];
+
+const grid = document.getElementById("grid");
+
+grid.style.gridTemplateColumns = `repeat(${width}, 32px)`;
+
+function createGrid(){
+    grid.innerHTML = "";
+    level = [];
+
+    for(let y = 0; y < height; y++){
+        level[y] = [];
+        for(let x = 0; x < width; x++){
+            level[y][x] = ".";
+
+            let cell = document.createElement("div");
+            cell.className = "cell";
+            cell.dataset.x = x;
+            cell.dataset.y = y;
+
+            cell.onclick = function(){
+                let tool = document.getElementById("tool").value;
+                level[y][x] = tool;
+                updateGrid();
+            };
+
+            grid.appendChild(cell);
+        }
+    }
+    updateGrid();
+}
+
+function updateGrid(){
+    document.querySelectorAll(".cell").forEach(cell => {
+        let x = cell.dataset.x;
+        let y = cell.dataset.y;
+        let tileType = level[y][x];
+
+        if (tileImages[tileType]) {
+            cell.style.backgroundImage = `url("${tileImages[tileType]}")`;
+        } else {
+            cell.style.backgroundImage = "none";
+        }
+    });
+}
+
+function clearGrid(){
+    for(let y = 0; y < height; y++){
+        for(let x = 0; x < width; x++){
+            level[y][x] = ".";
+        }
+    }
+    updateGrid();
+}
+
+function exportLevel(){
+    let text = "";
+    for(let y = 0; y < height; y++){
+        text += level[y].join("");
+        if(y < height - 1) text += "\n";
+    }
+    document.getElementById("output").value = text;
+}
+
+function importLevel(){
+    let text = document.getElementById("output").value.trim().split("\n");
+    for(let y = 0; y < height; y++){
+        for(let x = 0; x < width; x++){
+            if(text[y] && text[y][x]) {
+                level[y][x] = text[y][x];
+            } else {
+                level[y][x] = ".";
+            }
+        }
+    }
+    updateGrid();
+}
+
+createGrid();
+
+</script>
+
+</body>
+</html>

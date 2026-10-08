@@ -1,0 +1,26 @@
+--atlas -f rgba5551 -z auto
+babaright_0.png
+babaright_1.png
+babaright_2.png
+babaleft_0.png
+babaleft_1.png
+babaleft_2.png
+babaup_0.png
+babaup_1.png
+babaup_2.png
+babadown_0.png
+babadown_1.png
+babadown_2.png
+wallobj.png
+rock.png
+flag.png
+tile.png
+text_wall.png
+text_is.png
+text_stop.png
+text_rock.png
+text_flag.png
+text_push.png
+text_win.png
+text_baba.png
+text_you.png
