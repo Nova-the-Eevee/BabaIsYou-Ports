@@ -1,0 +1,64 @@
+Error : script.lua:88: '<eof>' expected near 'end'
+Error : script.lua:88: '<eof>' expected near 'end'
+Error : script.lua:36: stack overflow
+Error : script.lua:36: stack overflow
+Error : script.lua:36: stack overflow
+Error : script.lua:36: stack overflow
+Error : script.lua:36: stack overflow
+Error : script.lua:148: attempt to index local 'tWall' (a nil value)
+Error : script.lua:36: stack overflow
+Error : script.lua:246: bad argument #3 to 'blit' (Image expected, got nil)
+Error : script.lua:208: '}' expected (to close '{' at line 200) near 'S'
+Error : script.lua:299: attempt to call global 'moveyou' (a nil value)
+Error : script.lua:299: attempt to call global 'moveyou' (a nil value)
+Error : script.lua:213: attempt to index global 'Sound' (a nil value)
+Error : script.lua:213: attempt to index global 'Sound' (a nil value)
+Error : script.lua:213: attempt to index global 'Sound' (a nil value)
+Error : script.lua:213: attempt to index global 'Sound' (a nil value)
+Error : script.lua:213: attempt to index global 'Sound' (a nil value)
+Error : script.lua:213: attempt to index global 'Sound' (a nil value)
+Error : script.lua:213: attempt to index global 'Sound' (a nil value)
+Error : script.lua:213: attempt to index global 'Sound' (a nil value)
+Error : script.lua:213: attempt to index global 'Sound' (a nil value)
+Error : script.lua:213: attempt to index global 'Sound' (a nil value)
+Error : script.lua:213: attempt to index global 'Sound' (a nil value)
+Error : script.lua:235: attempt to index global 'Sound' (a nil value)
+Error : script.lua:235: attempt to index global 'Sound' (a nil value)
+Error : script.lua:237: attempt to index global 'Sound' (a nil value)
+Error : script.lua:239: attempt to index global 'Sound' (a nil value)
+Error : script.lua:293: attempt to call field 'getLuaVersion' (a nil value)
+Error : script.lua:234: attempt to index global 'Sound' (a nil value)
+Error : script.lua:234: attempt to index global 'Sound' (a nil value)
+Error : script.lua:234: attempt to index global 'Sound' (a nil value)
+Error : script.lua:234: attempt to index global 'Sound' (a nil value)
+Error : script.lua:27: attempt to index global 'Sound' (a nil value)
+Error : script.lua:234: attempt to index global 'Sound' (a nil value)
+Error : script.lua:234: attempt to index global 'Sound' (a nil value)
+Error : script.lua:234: attempt to index global 'Sound' (a nil value)
+Error : script.lua:292: attempt to call field 'getLuaVersion' (a nil value)
+Error : script.lua:292: attempt to call field 'getLuaVersion' (a nil value)
+Error : script.lua:235: attempt to index global 'Sound' (a nil value)
+Error : script.lua:235: attempt to index global 'Sound' (a nil value)
+Error : script.lua:235: attempt to index global 'Sound' (a nil value)
+Error : script.lua:235: attempt to index global 'Sound' (a nil value)
+Error : script.lua:235: attempt to call field 'init' (a nil value)
+Error : script.lua:235: attempt to call field 'init' (a nil value)
+Error : script.lua:235: attempt to call field 'init' (a nil value)
+Error : script.lua:235: attempt to call field 'init' (a nil value)
+Error : script.lua:235: attempt to call field 'init' (a nil value)
+Error : script.lua:7: attempt to index global 'Graphics' (a nil value)
+Error : script.lua:7: attempt to index global 'Graphics' (a nil value)
+Error : script.lua:236: Cannot load the sound 'music.mp3'.
+Error : script.lua:236: Cannot load the sound 'music.mp3'.
+Error : script.lua:31: Cannot load the sound 'music.mp3'.
+Error : script.lua:31: Cannot load the sound 'music.mp3'.
+Error : script.lua:31: Cannot load the sound 'music.mp3'.
+Error : script.lua:31: Cannot load the sound 'music.mp3'.
+Error : script.lua:31: Cannot load the sound 'music.mp3'.
+Error : script.lua:328: 'end' expected (to close 'while' at line 255) near '<eof>'
+Error : script.lua:328: 'end' expected (to close 'while' at line 255) near '<eof>'
+Error : script.lua:328: 'end' expected (to close 'while' at line 255) near '<eof>'
+Error : script.lua:328: 'end' expected (to close 'while' at line 255) near '<eof>'
+Error : script.lua:253: unexpected symbol near '='
+Error : script.lua:253: unexpected symbol near '='
+Error : script.lua:253: unexpected symbol near '='
